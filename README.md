@@ -1,6 +1,3 @@
-[![version](https://img.shields.io/npm/v/google-timezones-json.svg)]()
-[![downloads](https://img.shields.io/npm/dm/google-timezones-json.svg)]()
-
 # Node.js Web Scraper Parser
 
 A Node.js-based web scraper parser that extracts product details from e-commerce websites using Cheerio for HTML parsing. The scraper handles various product information such as title, brand, price, currency, and images. It supports different websites and allows easy extension to handle more sites.
