@@ -1,5 +1,7 @@
-// Import the polyfill for ReadableStream
-require('web-streams-polyfill');
+import axios from 'axios';  // Import axios using ES Module syntax
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 // Now import and cheerio
 const cheerio = require('cheerio');
@@ -221,7 +223,7 @@ function currencyMap(symbol) {
  * @param {string} urlString - The URL of the webpage (used to identify the website).
  * @returns {Object} - An object containing parsed product details.
  */
-function parseHTML(html, urlString = '') {
+export function parseHTML(html, urlString = '') {
   // TODO: sanitize the HTML before using DOM purify
   const compactedHTML = compactHTML(html);
   const $ = cheerio.load(compactedHTML);
@@ -373,4 +375,37 @@ function parseHTML(html, urlString = '') {
   };
 }
 
-module.exports = { parseHTML };
+/**
+ * Crawl a website and extract product details by fetching and parsing its HTML.
+ *
+ * @param {string} urlString - The URL of the website to crawl.
+ * @returns {Promise<Object>} - An object containing crawled product details.
+ */
+export async function crawlWebsite(urlString) {
+  try {
+    // Fetch the HTML content of the page
+    const response = await axios.get(urlString, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
+      }
+    });
+
+    if (response.status !== 200) {
+      throw new Error(`Failed to fetch the webpage. Status code: ${response.status}`);
+    }
+
+    const html = response.data;
+
+    // Parse the HTML to extract product details
+    const productDetails = parseHTML(html, urlString);
+
+    return productDetails;
+  } catch (error) {
+    console.error(`Error crawling website: ${urlString}`, error.message);
+    return {
+      error: true,
+      message: error.message,
+      url: urlString,
+    };
+  }
+}

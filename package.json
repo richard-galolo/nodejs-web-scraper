@@ -2,8 +2,9 @@
   "name": "nodejs-web-scraper",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.mjs",
   "homepage": "",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/richard-galolo/nodejs-web-scraper"
@@ -15,6 +16,7 @@
   "author": "Richard Galolo",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.7.9",
     "cheerio": "^1.0.0",
     "node-fetch": "^3.3.2",
     "request": "^2.88.2",
